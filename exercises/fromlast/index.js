@@ -11,6 +11,20 @@
 //    list.insertLast('d');
 //    fromLast(list, 2).data // 'b'
 
-function fromLast(list, n) {}
+function fromLast(list, n) {
+  let slow = list.head;
+  let fast = list.head;
+  // Phase 1: Advance fast by n nodes
+  //   Moves us n away from the start to remove the offset
+  for (let i = 0; i < n; i++) {
+    fast = fast.next;
+  }
+  // Phase 2: We traverse the list forward since we cannot access a "back" property
+  while (fast.next) {
+    slow = slow.next;
+    fast = fast.next;
+  }
+  return slow;
+}
 
 module.exports = fromLast;

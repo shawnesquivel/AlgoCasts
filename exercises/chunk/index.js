@@ -8,30 +8,63 @@
 // chunk([1, 2, 3, 4, 5], 4) --> [[ 1, 2, 3, 4], [5]]
 // chunk([1, 2, 3, 4, 5], 10) --> [[ 1, 2, 3, 4, 5]]
 
+// Doing it again - July 15, 2022
+// Total Time: 44 Minutes
 function chunk(array, size) {
-  var a = 0;
-  var chunked = [];
-  while (a < array.length) {
-    chunked.push(array.slice(a, a + size));
-    a += size;
+  // edge cases
+  if (size < 0 || !array) {
+    console.log("The array is undefined");
+    return;
   }
-  console.log(chunked);
+  //   Rounds up
+  const subArrays = Math.ceil(array.length / size);
+
+  //   Create the array of subarrays
+  const chunked = [];
+  for (i = 0; i < subArrays; i++) {
+    chunked.push([]);
+  }
+
+  //   Push values into the subarrays
+  //   Counter indexes through the original array.
+  let counter = 0;
+  //   Outer Loop: Subarrays
+  for (i = 0; i < subArrays; i++) {
+    // Inner Loop: Pushing values into the subarrays
+    for (j = 0; j < size; j++) {
+      chunked[i][j] = array[counter];
+      counter++;
+    }
+  }
+
   return chunked;
 }
 
-module.exports = chunk;
+// Tests
+// Normal Case
+const chunked = chunk([1, 2, 3, 4], 2); // [[1,2],[3,4]]
+const solution = [
+  [1, 2],
+  [3, 4],
+];
 
-// function chunk(array, size) {
-//   // First, create a container
-//   var chunked = [];
-//   for (let element of array) {
-//     const last = chunked[chunked.length - 1];
-//     if (!last || last.length === size) {
-//       chunked.push([element]);
-//     } else {
-//       chunked[chunked.length - 1].push(element);
-//     }
-//   }
-//   console.log(chunked);
-//   return chunked;
-// }
+// Test that the arrays are equal
+for (let i = 0; i < chunked.length; i++) {
+  for (let j = 0; j < 2; j++) {
+    if (chunked[i][j] !== solution[i][j]) {
+      console.log("not equal");
+    }
+  }
+}
+
+// // Edge case
+// const chunkedTwo = chunk([], -1);
+
+// console.log("ChunkedTwo:", chunkedTwo);
+
+// // Uneven Aray
+// const chunkedThree = chunk([1, 2, 3, 4, 5], 2);
+
+// console.log("ChunkedThree:", chunkedThree);
+
+module.exports = chunk;

@@ -7,45 +7,38 @@
 //   anagrams('rail safety', 'fairy tales') --> True
 //   anagrams('RAIL! SAFETY!', 'fairy tales') --> True
 //   anagrams('Hi there', 'Bye there') --> False
+function simplifyStr(str) {
+  return str.replace(/[^\w]/gi, "").toLowerCase();
+}
+
+function buildCharMap(str) {
+  const obj = {};
+  for (const char of str) {
+    if (obj[char]) {
+      obj[char]++;
+    } else {
+      obj[char] = 1;
+    }
+  }
+  return obj;
+}
 
 function anagrams(stringA, stringB) {
-  return cleanStr(stringA) == cleanStr(stringB);
+  const strA = simplifyStr(stringA);
+  const strB = simplifyStr(stringB);
+  const objA = buildCharMap(strA);
+  const objB = buildCharMap(strB);
+  // they should have the same amount of unique chars
+  if (Object.keys(objA).length !== Object.keys(objB).length) {
+    return false;
+  }
+
+  for (const char in objA) {
+    if (objA[char] !== objB[char]) {
+      return false;
+    }
+  }
+  return true;
 }
-const cleanStr = function (str) {
-  return str.replace(/[^\w]/gi, "").toLowerCase().split("").sort().join("");
-};
 
 module.exports = anagrams;
-// function anagrams(stringA, stringB) {
-//   const strToCharMap = function (str) {
-//     // remove special characters
-//     str = str.replace(/[^\w]/gi, "").toLowerCase();
-//     var charMap = {};
-//     // create character map
-//     for (char of str) {
-//       if (!charMap[char]) {
-//         charMap[char] = 1;
-//       } else {
-//         charMap[char]++;
-//       }
-//     }
-//     return charMap;
-//   };
-
-//   objA = strToCharMap(stringA);
-//   objB = strToCharMap(stringB);
-
-//   console.log(objA, objB);
-
-//   //   If objA keys does not equal objB keys, return false
-//   if (Object.keys(objA).length !== Object.keys(objB).length) return false;
-
-//   // array - of, object - in
-//   for (let char in objA) {
-//     if (objA[char] !== objB[char]) {
-//       return false;
-//     }
-//   }
-
-//   return true;
-// }
